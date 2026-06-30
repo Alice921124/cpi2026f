@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1900">
+  <title>45 CPE 錯誤修正</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+  <link rel="stylesheet" href="vendor/reveal/reset.css">
+  <link rel="stylesheet" href="vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="vendor/reveal/theme/sky.css">
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="vendor/reveal/plugin/highlight/zenburn.css"><!--edit-->
+  <!-- Pollyfill script -->
+  <script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+  <!-- Live2DCubismCore script -->
+  <script src="./dist/live2dcubismcore.js"></script>
+  <!-- Build script -->
+  <script src="./dist/bundle.js"></script>
+  <style>
+    ul, ol{
+      list-style: none;
+      margin-left: 0;
+    }
+    .reveal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 26px;
+    }
+    #pageIndex{
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      background: #000;
+      color: #fff;
+      font-size: 20px;
+    }
+    .controls{
+      bottom: 24px !important;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 0px; 
+      width: 1000px;
+    }
+    .text-img-align {
+      display: flex;
+      align-items: center;
+      gap: 12px; /* 字和圖片中間的空隙，可以調整 */
+      padding-left: 4px;
+      line-height: 1.2; 
+    }
+    .text-align {
+      /* display: inline-block;   讓整塊可以置中 */
+      text-align: left;        /* 內部文字靠左 */
+      line-height: 2;
+      vertical-align: middle;
+    }
+
+    .td-center {
+      text-align: center;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <!--
+         data-no: 老師網頁的cubism人物編號(從0開始，網頁上的編號-1)
+         data-positionx: cubism人物水平位移範圍(建議-1 ~ 0.9)
+         data-positiony: cubism人物垂直位移範圍(建議-0.9~0.4)
+         data-scale: cubism人物縮放(建議1~2之間的小數值，最大極限是3)
+         data-motionno: cubism人物指定動作編號(從0開始，請參閱model3.json檔案的ALL MOTION GROUP)
+      -->
+      <section>
+        <h3 style="text-align: left;">45 CPE 錯誤修正</h3>
+        <section
+          data-no="6" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0"
+          style="text-align: left"><br>
+          <p style="font-size: 26px; text-align: left; position: relative; top: -10px;">
+            如果一個布林矩陣（Boolean Matrix）的每一列（Row）和每一行（Column）中，1 的個數都是偶數，則稱這個矩陣具有 Parity Property（奇偶校驗性質）。<br>
+            例如，下面是一個 4 × 4 的矩陣，它具有奇偶校驗性質：<br>
+            1 0 1 0<br>
+            0 0 0 0<br>
+            1 1 1 1<br>
+            0 1 0 1<br>
+            各列（Row）的總和分別為：<br>
+            2、0、4、2<br>
+            各行（Column）的總和分別為：<br>
+            2、2、2、2<br>
+            由於每一列與每一行的總和都是偶數，因此此矩陣具有 Parity Property（奇偶校驗性質）。<br>
+            你的工作是撰寫一個程式，讀入一個矩陣並判斷它是否具有奇偶校驗性質。<br>
+            如果沒有，程式必須再判斷是否只需要修改一個位元（0 改成 1，或 1 改成 0）就能使矩陣符合奇偶校驗性質。<br>
+            如果連修改一個位元都無法做到，則此矩陣應判定為 Corrupt（損毀）。<br>
+          </p>
+          </section>
+      </section>
+
+      <section>
+        <h3 >Input/Output</h3>
+        <section 
+            data-no="6"
+            data-positionx="0.8" 
+            data-positiony="0.03" 
+            data-scale="1" 
+            data-motionno="0"
+            style="text-align: left">
+            <table class="table">
+                <tr>
+                    <th class="th">輸入說明</th>
+                    <th class="th">輸出說明</th>
+                </tr>
+                <tr>
+                    <td class="td">輸入包含一組或多組測試資料。<br><br>
+                    每組測試資料的第一行包含一個整數 n（n < 100），表示矩陣的大小為 n × n。<br>
+                    接下來共有 n 行，每一行包含 n 個整數。<br><br>
+                    矩陣中的元素只會是：<br>
+                    0<br>
+                    1<br><br>
+                    當輸入的 n = 0 時，表示輸入結束，不需再處理。
+                    </td>
+                    <td class="td">對於每一組測試資料，輸出一行結果。<br>
+                    如果矩陣本身已經具有奇偶校驗性質，輸出：<br>
+                    OK<br>
+                    如果只需要修改一個位元即可符合奇偶校驗性質，輸出：<br>
+                    Change bit (i,j)<br>
+                    其中：<br>
+                    1. i 表示需要修改的列（Row，從 1 開始編號）<br>
+                    2. j 表示需要修改的行（Column，從 1 開始編號）<br>
+                    3. 如果無法只透過修改一個位元使矩陣符合奇偶校驗性質，則輸出：<br>
+                    Corrupt
+                    </td>   
+                </tr>
+            </table>
+            </section>
+      </section>
+
+      <section>
+        <h3 >Input/Output</h3>
+        <section
+          data-no="6" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0"
+          style="text-align: left"><br>
+          <table>
+            <tr>
+              <th>Sample Input</th>
+              <th>Output</th>
+            </tr>
+            <td class="td">4<br>
+            1 0 1 0<br>
+            0 0 0 0<br>
+            1 1 1 1<br>
+            0 1 0 1<br>
+            4<br>
+            1 0 1 0<br>
+            0 0 1 0<br>
+            1 1 1 1<br>
+            0 1 0 1<br> 
+            4<br>
+            1 0 1 0<br>
+            0 1 1 0<br>
+            1 1 1 1<br>
+            0 1 0 1<br>
+            0
+            </td>
+            <td class="td">OK<br>
+            Change bit (2,3)<br>
+            Corrupt
+            </td>   
+            </tr>
+          </table>
+        
+        </section>
+      </section>
+
+      <section>
+        <h3 >hints</h3>
+        <section
+          data-no="17" 
+          data-positionx="0.75" 
+          data-positiony="0.05" 
+          data-scale="1" 
+          data-motionno="0"
+          style="text-align: left"><br><br><br><br><br>
+          <section data-auto-animate>
+            <pre style="font-size: 26px;"><code data-trim data-noescape>
+            def main():
+                while True:
+                    #讀入 n
+                    #如果 n=0結束
+                    #建立矩陣
+
+                    #逐列與逐行檢查奇偶性
+
+                        #如果列與行皆為偶數繼續檢查
+
+                        #如果列或行為奇數記錄需要修改的位置
+
+                    #輸出答案
+
+            main()
+            </code></pre> 
+          </section>
+        </section>
+      </section>
+
+
+        
+      <!--
+         data-no: 老師網頁的cubism人物編號(從0開始，網頁上的編號-1, 6-受付, 17-日常, 8-HIYORI)
+         data-positionx: cubism人物水平位移範圍(建議-1 ~ 0.9)
+         data-positiony: cubism人物垂直位移範圍(建議-0.9~0.4)
+         data-scale: cubism人物縮放(建議1~2之間的小數值，最大極限是3)
+         data-motionno: cubism人物指定動作編號(從0開始，請參閱model3.json檔案的ALL MOTION GROUP)
+      -->
+
+      <section>
+        <h3 >解答</h3>
+        <section data-auto-animate
+          data-no="8" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0">
+          <font size=6>主程式</font>
+            <pre style="font-size: 26px;"><code data-trim data-noescape>
+            def main():
+                while True:
+                    #讀入 n
+                    n = int(input())
+
+                    #如果 n=0結束
+                    if n == 0:
+                        break
+                    
+                    #建立矩陣
+                    matrix = []
+
+                    for i in range(n):
+                        matrix.append(list(map(int, input().split())))
+
+                    ok = True
+                    row = -1
+                    col = -1
+
+                    #逐列與逐行檢查奇偶性
+                    for i in range(n):
+                        row_sum = sum(matrix[i])
+                        col_sum = 0
+                        for j in range(n):
+                            col_sum += matrix[j][i]
+
+                        #如果列與行皆為偶數繼續檢查
+                        if row_sum % 2 == 0 and col_sum % 2 == 0:
+                            continue
+
+                        #如果列或行為奇數記錄需要修改的位置
+                        if row_sum % 2 == 1:
+                            if row == -1:
+                                row = i
+                            else:
+                                row = -1
+                                break
+
+                        if col_sum % 2 == 1:
+                            if col == -1:
+                                col = i
+                            else:
+                                col = -1
+                                break
+
+                        ok = False
+
+                    #輸出答案
+                    if ok:
+                        print("OK")
+                    elif row == -1 or col == -1:
+                        print("Corrupt")
+                    else:
+                        print(f"Change bit ({row+1},{col+1})")
+            </code></pre>
+            
+        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        </section>
+
+        <section data-auto-animate
+          data-no="8" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0">
+          <font size=6>呼叫主程式</font>
+            <pre style="font-size: 24px;"><code data-trim data-noescape>
+              main()
+            </code></pre>
+            
+        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        </section>
+
+      </section>
+         
+    </div>
+  </div>
+  <div id="pageIndex"></div>
+  <!-- reveal.js-->
+  <script src="vendor/reveal/reveal.js"></script>
+  <!--plugin-->
+  <script src="vendor/reveal/plugin/math/math.js"></script>
+  <script src="vendor/reveal/plugin/search/search.js"></script>
+  <script src="vendor/reveal/plugin/zoom/zoom.js"></script>
+
+  <script src="vendor/reveal/plugin/notes/notes.js"></script>
+  <script src="vendor/reveal/plugin/markdown/markdown.js"></script>
+  <script src="vendor/reveal/plugin/highlight/highlight.js"></script>
+  <script src="main-ppt.js"></script>
+</body>
+
+</html>
+
