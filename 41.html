@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1900">
+  <title>41 CPE 踩地雷</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+  <link rel="stylesheet" href="vendor/reveal/reset.css">
+  <link rel="stylesheet" href="vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="vendor/reveal/theme/sky.css">
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="vendor/reveal/plugin/highlight/zenburn.css"><!--edit-->
+  <!-- Pollyfill script -->
+  <script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+  <!-- Live2DCubismCore script -->
+  <script src="./dist/live2dcubismcore.js"></script>
+  <!-- Build script -->
+  <script src="./dist/bundle.js"></script>
+  <style>
+    ul, ol{
+      list-style: none;
+      margin-left: 0;
+    }
+    .reveal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 26px;
+    }
+    #pageIndex{
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      background: #000;
+      color: #fff;
+      font-size: 20px;
+    }
+    .controls{
+      bottom: 24px !important;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 0px; 
+      width: 1000px;
+    }
+    .text-img-align {
+      display: flex;
+      align-items: center;
+      gap: 12px; /* 字和圖片中間的空隙，可以調整 */
+      padding-left: 4px;
+      line-height: 1.2; 
+    }
+    .text-align {
+      /* display: inline-block;   讓整塊可以置中 */
+      text-align: left;        /* 內部文字靠左 */
+      line-height: 2;
+      vertical-align: middle;
+    }
+
+    .td-center {
+      text-align: center;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <!--
+         data-no: 老師網頁的cubism人物編號(從0開始，網頁上的編號-1)
+         data-positionx: cubism人物水平位移範圍(建議-1 ~ 0.9)
+         data-positiony: cubism人物垂直位移範圍(建議-0.9~0.4)
+         data-scale: cubism人物縮放(建議1~2之間的小數值，最大極限是3)
+         data-motionno: cubism人物指定動作編號(從0開始，請參閱model3.json檔案的ALL MOTION GROUP)
+      -->
+      <section>
+        <h3 style="text-align: left;">41 CPE 踩地雷</h3>
+        <section
+          data-no="6" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0"
+          style="text-align: left"><br>
+          <p style="font-size: 26px; text-align: left; position: relative; top: -10px;">
+            遊戲的目標是在一個 M × N 的地圖中找出所有地雷的位置。為了協助玩家，每一個不是地雷的格子都會顯示一個數字，表示與該格相鄰的地雷數量。<br>
+            例如，下列是一個 4 × 4 的地圖，其中有兩顆地雷（以 * 表示）：<br><br>
+            *...<br>
+            ....<br>
+            .*..<br>
+            ....<br>
+                <br>
+            若將每個安全格改為周圍相鄰地雷的數量，則會得到：<br><br>
+            *100<br>
+            2210<br>
+            1*10<br>
+            1110<br><br>
+            每一個格子最多會有 8 個相鄰的格子。<br>
+          </p>
+          </section>
+      </section>
+      <section>
+        <h3 >Input/Output</h3>
+        <section 
+            data-no="6"
+            data-positionx="0.8" 
+            data-positiony="0.03" 
+            data-scale="1" 
+            data-motionno="0"
+            style="text-align: left">
+            <table class="table">
+                <tr>
+                    <th class="th">輸入說明</th>
+                    <th class="th">輸出說明</th>
+                </tr>
+                <tr>
+                    <td class="td">輸入包含多組測試資料。<br><br>
+                    每組測試資料的第一行包含兩個整數 n 和 m（0 < n, m ≤ 100），分別代表地圖的列數（Rows）與行數（Columns）。<br><br>
+                    接下來共有 n 行，每一行包含 m 個字元，表示整張地圖。<br>
+                    .（句點）代表安全格。<br>
+                    *（星號）代表地雷。<br><br>
+                    當輸入為 0 0 時，表示所有測試資料結束，該組資料不需要進行處理。
+                    </td>
+                    <td class="td">對於每一組測試資料，請先輸出一行：<br>
+                    Field #x:<br>
+                    其中 x 代表目前是第幾組測試資料（從 1 開始編號）。<br><br>
+                    接著輸出處理後的地圖：<br>
+                    原本是 * 的位置保持不變。<br>
+                    原本是 . 的位置改為該格周圍八個方向相鄰地雷的數量。<br><br>
+                    每兩組測試資料之間必須空一行。
+                    </td>   
+                </tr>
+            </table>
+            </section>
+      </section>
+
+      <section>
+        <h3 >Input/Output</h3>
+        <section
+          data-no="6" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0"
+          style="text-align: left"><br>
+          <table>
+            <tr>
+              <th>Sample Input</th>
+              <th>Output</th>
+            </tr>
+            <tr>
+                <td class="td">4 4<br>
+                    *...<br>
+                    ....<br>
+                    .*..<br>
+                    ....<br>
+                    3 5<br>
+                    **...<br>
+                    .....<br>
+                    .*...<br>
+                        <br>
+                    0 0<br>
+                        </td>
+                    <td class="td">Field #1:<br>
+                    *100<br>
+                    2210<br>
+                    1*10<br>
+                    1110<br>
+                    Field #2:<br>
+                    **100<br>
+                    33200<br>
+                    1*100<br>
+                    </td>   
+            </tr>
+          </table>
+        
+        </section>
+      </section>
+
+      <section>
+        <h3 >hints</h3>
+        <section
+          data-no="17" 
+          data-positionx="0.75" 
+          data-positiony="0.05" 
+          data-scale="1" 
+          data-motionno="0"
+          style="text-align: left"><br><br><br><br><br>
+          <section data-auto-animate>
+            <pre style="font-size: 26px;"><code data-trim data-noescape>
+            def main():
+                case = 0
+                while True:
+                    #讀入 n,m
+                    #如果 n=m=0 則結束
+                    #建立地圖
+                    #逐格檢查
+                    #如果是地雷輸出 *
+                    #否則計算八個方向地雷數
+                    #輸出答案
+
+            main()
+            </code></pre> 
+          </section>
+        </section>
+      </section>
+
+
+        
+      <!--
+         data-no: 老師網頁的cubism人物編號(從0開始，網頁上的編號-1, 6-受付, 17-日常, 8-HIYORI)
+         data-positionx: cubism人物水平位移範圍(建議-1 ~ 0.9)
+         data-positiony: cubism人物垂直位移範圍(建議-0.9~0.4)
+         data-scale: cubism人物縮放(建議1~2之間的小數值，最大極限是3)
+         data-motionno: cubism人物指定動作編號(從0開始，請參閱model3.json檔案的ALL MOTION GROUP)
+      -->
+
+      <section>
+        <h3 >解答</h3>
+        <section data-auto-animate
+          data-no="8" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0">
+          <font size=6>主程式</font>
+            <pre style="font-size: 26px;"><code data-trim data-noescape>
+            def main():
+
+                case = 0
+                while True:
+                    #讀入 n,m
+                    n, m = map(int, input().split())
+
+                    #如果 n=m=0 則結束
+                    if n == 0 and m == 0:
+                        break
+
+                    #建立地圖
+                    case += 1
+                    field = []
+                    for i in range(n):
+                        field.append(list(input()))
+
+                    #輸出答案
+                    print("Field #%d:" % case)
+
+                    #逐格檢查
+                    for i in range(n):
+                        for j in range(m):
+
+                            #如果是地雷，輸出 *
+                            if field[i][j] == '*':
+                                print("*", end="")
+
+                            #否則，計算八個方向地雷數
+                            else:
+                                count = 0
+                                for dx in [-1, 0, 1]:
+                                    for dy in [-1, 0, 1]:
+                                        if dx == 0 and dy == 0:
+                                            continue
+                                        x = i + dx
+                                        y = j + dy
+                                        if 0 <= x < n and 0 <= y < m:
+                                            if field[x][y] == '*':
+                                                count += 1
+
+                                print(count, end="")
+
+                        print()
+
+                    print()
+            </code></pre>
+            
+        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        </section>
+
+        <section data-auto-animate
+          data-no="8" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0">
+          <font size=6>呼叫主程式</font>
+            <pre style="font-size: 24px;"><code data-trim data-noescape>
+              main()
+            </code></pre>
+            
+        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        </section>
+
+      </section>
+         
+    </div>
+  </div>
+  <div id="pageIndex"></div>
+  <!-- reveal.js-->
+  <script src="vendor/reveal/reveal.js"></script>
+  <!--plugin-->
+  <script src="vendor/reveal/plugin/math/math.js"></script>
+  <script src="vendor/reveal/plugin/search/search.js"></script>
+  <script src="vendor/reveal/plugin/zoom/zoom.js"></script>
+
+  <script src="vendor/reveal/plugin/notes/notes.js"></script>
+  <script src="vendor/reveal/plugin/markdown/markdown.js"></script>
+  <script src="vendor/reveal/plugin/highlight/highlight.js"></script>
+  <script src="main-ppt.js"></script>
+</body>
+
+</html>
+
