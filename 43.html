@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1900" />
+    <title>UVa 11321 客製化排序</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <link rel="stylesheet" href="vendor/reveal/reset.css" />
+    <link rel="stylesheet" href="vendor/reveal/reveal.css" />
+    <link rel="stylesheet" href="vendor/reveal/theme/sky.css" />
+
+    <link rel="stylesheet" href="vendor/reveal/plugin/highlight/zenburn.css" />
+    <script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+    <script src="./dist/live2dcubismcore.js"></script>
+    <script src="./dist/bundle.js"></script>
+    <style>
+      ul,
+      ol {
+        list-style: none;
+        margin-left: 0;
+      }
+
+      .reveal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 26px;
+      }
+
+      #pageIndex {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        background: #000;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      .controls {
+        bottom: 24px !important;
+      }
+      .table,
+      .th,
+      .td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 0px;
+        width: 1100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h3 style="text-align: left">UVa 11321 客製化排序 (Sort! Sort!!)</h3>
+          <section
+            data-no="6"
+            data-positionx="0.8"
+            data-positiony="0.03"
+            data-scale="1"
+            data-motionno="0"
+            style="text-align: left"
+          >
+            <br /><br />
+            <p>
+              給定 N 個數字與一個正整數 M，將這 N 個數字按照「除以 M 的餘數」由小到大排序。<br /><br />
+              若餘數相同，則依序套用以下規則打破平手（Tie-breaker）：<br />
+              1. 奇數排在偶數前面。<br />
+              2. 若皆為奇數，數字較<b>大</b>的排前面。<br />
+              3. 若皆為偶數，數字較<b>小</b>的排前面。<br /><br />
+              ⚠️ 注意：負數取餘數必須遵循 C 語言規則 (例：-100 % 3 = -1)。
+            </p>
+          </section>
+
+          <section
+            data-no="6"
+            data-positionx="0.8"
+            data-positiony="0.03"
+            data-scale="1"
+            data-motionno="0"
+            style="text-align: left"
+          >
+            <table class="table">
+              <tr>
+                <th class="th">輸入說明</th>
+                <th class="th">輸出說明</th>
+              </tr>
+              <tr>
+                <td class="td">
+                  1. 包含多組測資。<br />
+                  2. 每組第一行為 N 與 M。<br />
+                  3. 接著有 N 行數字。<br />
+                  4. 輸入以 "0 0" 結束。
+                </td>
+                <td class="td">
+                  1. 先輸出 N 與 M。<br />
+                  2. 接著依序輸出排序後的 N 個數字。<br />
+                  3. 最後必須將結尾的 "0 0" 也印出來。
+                </td>
+              </tr>
+            </table>
+          </section>
+        </section>
+
+        <section>
+          <h3>Input/Output</h3>
+          <br />
+          <section
+            data-auto-animate
+            data-no="6"
+            data-positionx="0.8"
+            data-positiony="0.03"
+            data-scale="1"
+            data-motionno="0"
+            style="text-align: left"
+          >
+            <br />
+            <table class="table">
+              <tr>
+                <th class="th">Sample Input</th>
+                <th class="th">Output</th>
+              </tr>
+              <tr>
+                <td class="td">
+                  15 3<br />1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />13<br />14<br />15<br />0
+                  0
+                </td>
+                <td class="td">
+                  15 3<br />15<br />9<br />3<br />6<br />12<br />13<br />7<br />1<br />4<br />10<br />11<br />5<br />2<br />8<br />14<br />0
+                  0
+                </td>
+              </tr>
+            </table>
+          </section>
+        </section>
+
+        <section>
+          <h3>Hints</h3>
+          <section
+            data-auto-animate
+            data-no="17"
+            data-positionx="0.8"
+            data-positiony="0.03"
+            data-scale="1"
+            data-motionno="0"
+            style="text-align: left"
+          >
+            <br />
+            <pre
+              style="font-size: 26px"
+            ><code data-trim data-noescape class="language-python" data-line-numbers>
+          def compare(a, b):
+              # 計算 a 和 b 除以 M 的餘數 (使用 math.fmod 處理負數)
+              
+              # 規則 1：餘數不同，餘數較小者排前面
+              if mod_a != mod_b: return mod_a - mod_b
+              
+              # 判斷奇偶性
+              a_is_odd = (a % 2 != 0)
+              b_is_odd = (b % 2 != 0)
+              
+              # 規則 2：一奇一偶，奇數排前面
+              
+              # 規則 3：兩者皆為奇數，數值大者排前面
+              
+              # 規則 4：兩者皆為偶數，數值小者排前面
+
+          def main():
+              # 讀取全部資料並切割 sys.stdin.read().split()
+              # 使用 while 迴圈與 index 變數讀取 N, M 與陣列
+              # 呼叫 nums.sort(key=cmp_to_key(compare))
+          </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h3>解答</h3>
+          <section
+            data-auto-animate
+            data-no="8"
+            data-positionx="0.8"
+            data-positiony="0.03"
+            data-scale="1"
+            data-motionno="0"
+          >
+            <font size="6">副程式-compare(): 比較邏輯</font>
+            <pre
+              style="font-size: 20px"
+            ><code data-trim data-noescape data-line-numbers class="language-python">
+import sys
+import math
+from functools import cmp_to_key
+
+# 宣告為全域變數，方便 compare 函數存取
+M = 0
+
+def compare(a, b):
+    # 1. 取得 C 語言風格的餘數 (處理負數問題)
+    # math.fmod 回傳浮點數，需轉為 int
+    mod_a = int(math.fmod(a, M))
+    mod_b = int(math.fmod(b, M))
+
+    # 規則 1：餘數不同，餘數較小者排前面
+    if mod_a != mod_b:
+        return mod_a - mod_b
+
+    # 判斷兩數是否為奇數 (不等於 0 即為奇數)
+    a_is_odd = (a % 2 != 0)
+    b_is_odd = (b % 2 != 0)
+
+    # 規則 2：一奇一偶，奇數排前面
+    if a_is_odd != b_is_odd:
+        # 回傳負數代表第一個參數(a)排前面
+        if a_is_odd:
+            return -1
+        else:
+            return 1
+
+    # 規則 3：兩者皆為奇數，數值大者排前面
+    if a_is_odd and b_is_odd:
+        return b - a
+
+    # 規則 4：兩者皆為偶數，數值小者排前面
+    if not a_is_odd and not b_is_odd:
+        return a - b
+              </code></pre>
+          </section>
+
+          <section
+            data-auto-animate
+            data-no="8"
+            data-positionx="0.8"
+            data-positiony="0.03"
+            data-scale="1"
+            data-motionno="0"
+          >
+            <font size="6">主程式</font>
+            <pre
+              style="font-size: 20px"
+            ><code data-trim data-noescape data-line-numbers class="language-python">
+def main():
+    global M # 宣告使用全域變數
+
+    while True:
+        try:
+            line = input().split()
+            if not line:
+                continue
+            N, M = map(int, line)
+
+            # 遇到 0 0 代表結束，需印出 0 0
+            if N == 0 and M == 0:
+                print("0 0")
+                break
+
+            # 讀取 N 個數字
+            nums = []
+            for _ in range(N):
+                nums.append(int(input()))
+
+            # 呼叫 sort，透過 cmp_to_key 套用自定義的 compare 規則
+            nums.sort(key=cmp_to_key(compare))
+
+            # 輸出結果
+            print(f"{N} {M}")
+            for num in nums:
+                print(num)
+
+        except EOFError:
+            break
+
+if __name__ == "__main__":
+    main()
+              </code></pre>
+          </section>
+        </section>
+      </div>
+    </div>
+    <div id="pageIndex"></div>
+    <script src="vendor/reveal/reveal.js"></script>
+    <script src="vendor/reveal/plugin/math/math.js"></script>
+    <script src="vendor/reveal/plugin/search/search.js"></script>
+    <script src="vendor/reveal/plugin/zoom/zoom.js"></script>
+
+    <script src="vendor/reveal/plugin/notes/notes.js"></script>
+    <script src="vendor/reveal/plugin/markdown/markdown.js"></script>
+    <script src="vendor/reveal/plugin/highlight/highlight.js"></script>
+    <script src="main-ppt.js"></script>
+  </body>
+</html>
