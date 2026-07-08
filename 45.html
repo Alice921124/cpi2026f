@@ -233,7 +233,7 @@
       -->
 
       <section>
-        <h3 >解答</h3>
+        <h3 >解答 1</h3>
         <section data-auto-animate
           data-no="8" 
           data-positionx="0.8" 
@@ -296,12 +296,14 @@
                         print("Corrupt")
                     else:
                         print(f"Change bit ({row+1},{col+1})")
-            </code></pre>
-            
-        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
-        </section>
 
-        <section data-auto-animate
+            main()
+            </code></pre>
+        </section>    
+        <!-- <img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        <!-- </section> -->
+
+        <!-- <section data-auto-animate
           data-no="8" 
           data-positionx="0.8" 
           data-positiony="0.03" 
@@ -312,10 +314,95 @@
               main()
             </code></pre>
             
-        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
-        </section>
+        <img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;"> -->
+        <!-- </section> --> 
 
       </section>
+
+      <section>
+        <h3 >解答 2</h3>
+        <section data-auto-animate
+          data-no="8" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0">
+          <font size=6>主程式</font>
+            <pre style="font-size: 26px;"><code data-trim data-noescape>
+          def main():
+            while True:
+                n = int(input())
+                if n == 0:
+                    break
+
+                matrix = [list(map(int, input().split())) for _ in range(n)]
+
+                odd_rows = []
+                odd_cols = []
+
+                # 找奇數 row
+                for i in range(n):
+                    if sum(matrix[i]) % 2:
+                        odd_rows.append(i)
+
+                # 找奇數 column
+                for j in range(n):
+                    s = 0
+                    for i in range(n):
+                        s += matrix[i][j]
+                    if s % 2:
+                        odd_cols.append(j)
+
+                if len(odd_rows) == 0 and len(odd_cols) == 0:
+                    print("OK")
+                elif len(odd_rows) == 1 and len(odd_cols) == 1:
+                    print(f"Change bit ({odd_rows[0]+1},{odd_cols[0]+1})")
+                else:
+                    print("Corrupt")
+
+          main()
+
+            </code></pre>
+            
+        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        </section>
+      </section>
+
+        <section>
+        <h3 >解答 3</h3>
+        <section data-auto-animate
+          data-no="8" 
+          data-positionx="0.8" 
+          data-positiony="0.03" 
+          data-scale="1" 
+          data-motionno="0">
+          <font size=6>主程式</font>
+            <pre style="font-size: 26px;"><code data-trim data-noescape>
+          def main():
+            while True:
+                n = int(input())
+                if n == 0:
+                    break
+
+                matrix = [list(map(int, input().split())) for _ in range(n)]
+
+                # 方法二（Pythonic）
+                odd_rows = [i for i, row in enumerate(matrix) if sum(row) % 2]
+                odd_cols = [j for j, col in enumerate(zip(*matrix)) if sum(col) % 2]
+
+                if len(odd_rows) == 0 and len(odd_cols) == 0:
+                    print("OK")
+                elif len(odd_rows) == 1 and len(odd_cols) == 1:
+                    print(f"Change bit ({odd_rows[0]+1},{odd_cols[0]+1})")
+                else:
+                    print("Corrupt")
+
+          main()
+
+            </code></pre>
+        </section>    
+        <!--<img src="img/ch2/o11_2_0.JPG" style="display:block; margin:auto;">-->
+        </section>
          
     </div>
   </div>
